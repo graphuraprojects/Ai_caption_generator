@@ -149,4 +149,10 @@ TEMPLATES[0]["OPTIONS"]["context_processors"].append(
     "generator.context_processors.social_links"
 )
 
+ALLOWED_HOSTS = [
+    'ai-caption-generator-bmpo.onrender.com',
+    'localhost',
+ '127.0.0.1'
+]
+
 
