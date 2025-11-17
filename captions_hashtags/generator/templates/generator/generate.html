@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Caption & Hashtags Generator | Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'generator/bootstrap/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'generator/bootstrap/LineIcons.2.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'generator/bootstrap/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'generator/bootstrap/lindy-uikit.css' %}" />
+    <link rel="stylesheet" href="{% static 'generator/generate.css' %}">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="{% static 'generator/logo.png' %}" alt="Logo" class="logo-img">
+        </div>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <nav id="nav-menu">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <!-- <li><a href="{% url 'home' %}#testimonials">Testimonials</a></li> -->
+                <li><a href="{% url 'input' %}">Generate</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="results-section">
+        <h1>Your AI-Generated Captions & Hashtags</h1>
+
+        {% if results %}
+        {% for platform, suggestions in results.items %}
+        <h2>{{ platform }}</h2>
+        <div class="suggestion-container">
+            {% for suggestion in suggestions %}
+            <div class="suggestion-box">
+                <h3>Suggestion {{ forloop.counter }}</h3>
+                <p>
+                    {{ suggestion.caption }}
+                    {% if suggestion.hashtags %}
+                    <span class="hashtags">
+                        {% for tag in suggestion.hashtags %}
+                        <span>#{{ tag|cut:'#' }}</span>
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </p>
+                <div class="btn-group">
+                    <button type="button" class="copy-btn">📋 Copy</button>
+                    <button type="button" class="regenerate-btn" data-platform="{{ platform }}"
+                        data-index="{{ forloop.counter0 }}">🔁 Regenerate</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No suggestions generated yet. Please submit the form.</p>
+        {% endif %}
+    </section>
+
+    {% if results %}
+    <div class="download-export">
+        <h2>Download & Export</h2>
+        <div class="download-buttons">
+            <a href="{% url 'download_export' 'txt' %}"><button>📄 Download .TXT</button></a>
+            <a href="{% url 'download_export' 'csv' %}"><button>📊 Download .CSV</button></a>
+            <a href="{% url 'download_export' 'pdf' %}"><button>📘 Download .PDF</button></a>
+        </div>
+    </div>
+    {% endif %}
+
+    <footer class="footer">
+        <div class="footer-container">
+
+            <!-- Column 1 -->
+            <div class="footer-col">
+                <img src="{% static 'generator/logo.png' %}" alt="Graphura Logo" class="footer-logo-img">
+                <p class="footer-desc">
+                    Your trusted digital marketing partner helping businesses grow their online presence and reach
+                    their target audience effectively.
+                </p>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'generate' %}">Generate</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="footer-col">
+                <h3>Team Graphura</h3>
+                <ul>
+                    <li><a href="{{ social.linkedin_1 }}">Abdul Qadir Khan(Senior)</a></li>
+                    <li><a href="{{ social.linkedin_2 }}">Gargi Patel</a></li>
+                    <li><a href="{{ social.linkedin_3 }}">Shreyansh Chaudhary</a></li>
+                    <li><a href="{{ social.linkedin_4 }}">Aneekaa Sharma</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+
+                <p><i class="fas fa-map-marker-alt"></i> Gurgaon, Haryana, India</p>
+                <p><i class="fas fa-phone"></i> +91 7378021327</p>
+                <p><i class="fas fa-envelope"></i> official@graphura.in</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2025 Graphura India Private Limited. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="{% static 'generator/generate.js' %}"></script>
+</body>
+
+</html>
